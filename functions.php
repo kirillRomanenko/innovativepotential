@@ -148,32 +148,117 @@ add_action( 'wp_enqueue_scripts', 'innovativepotential_scripts' );
 
 function importExcel()
 {
-	echo 'proverka';
-	return;
+	// echo 'proverka';
+	// return;
 	// library
 	include_once(get_template_directory() . '/inc/PHPExcel/PHPExcel.php');
 	include_once(get_template_directory() . '/inc/PHPExcel/PHPExcel/Writer/Excel5.php');
 	include_once(get_template_directory() . '/inc/PHPExcel/PHPExcel/Writer/Excel2007.php');
 	include_once(get_template_directory() . '/inc/PHPExcel/PHPExcel/IOFactory.php');
 
-	$excel = PHPExcel_IOFactory::load(get_template_directory().'Пример данных по ДС.xlsx');
 
-	Foreach($excel ->getWorksheetIterator() as $worksheet) {
- 		$lists[] = $worksheet->toArray();
+	$inputFileName = get_template_directory().'/BD.xlsx';
+	
+
+//  Read your Excel workbook
+try {
+    $inputFileType = PHPExcel_IOFactory::identify($inputFileName);
+    $objReader = PHPExcel_IOFactory::createReader($inputFileType);
+    $objPHPExcel = $objReader->load($inputFileName);
+} catch(Exception $e) {
+    die('Error loading file "'.pathinfo($inputFileName,PATHINFO_BASENAME).'": '.$e->getMessage());
+}
+	$objPHPExcel->setActiveSheetIndex(0);
+	$sheet = $objPHPExcel ->getActiveSheet();
+	$array_data = array();
+	foreach($sheet->getRowIterator() as $row){
+
+		$rowIndex = $row->getRowIndex ();
+		if ($rowIndex == 1) {
+			$rowIndex = $row->getRowIndex() + 1;
+		}
+		$array_data[$rowIndex] = array(
+			'E'=>'','F'=>'','G'=>'','H'=>'','I'=>'','J'=>'','K'=>'','L'=>'','M'=>'','N'=>'','O'=>'',
+			'P'=>'','Q'=>'','R'=>'','S'=>'','T'=>'','U'=>'','V'=>'','W'=>'','X'=>'','Y'=>'','Z'=>'',
+			'AA'=>'','AB'=>'','AC'=>'','AD'=>'','AE'=>'','AF'=>'','AG'=>'','AH'=>'','AI'=>'','AJ'=>'','AK'=>'',
+			'AL'=>'','AM'=>'',
+		);
+		
+		// $cell = $sheet->getCell('D' . $rowIndex);
+		// $array_data[$rowIndex]['D'] = $cell->getCalculatedValue();
+		$cell = $sheet->getCell('E' . $rowIndex);
+		$array_data[$rowIndex]['E'] = $cell->getCalculatedValue();
+		$cell = $sheet->getCell('F' . $rowIndex);
+		$array_data[$rowIndex]['F'] = $cell->getCalculatedValue();
+		$cell = $sheet->getCell('G' . $rowIndex);
+		$array_data[$rowIndex]['G'] = $cell->getCalculatedValue();
+		$cell = $sheet->getCell('H' . $rowIndex);
+		$array_data[$rowIndex]['H'] = $cell->getCalculatedValue();
+		$cell = $sheet->getCell('I' . $rowIndex);
+		$array_data[$rowIndex]['I'] = $cell->getCalculatedValue();
+		$cell = $sheet->getCell('J' . $rowIndex);
+		$array_data[$rowIndex]['J'] = $cell->getCalculatedValue();
+		$cell = $sheet->getCell('K' . $rowIndex);
+		$array_data[$rowIndex]['K'] = $cell->getCalculatedValue();
+		$cell = $sheet->getCell('L' . $rowIndex);
+		$array_data[$rowIndex]['L'] = $cell->getCalculatedValue();
+		$cell = $sheet->getCell('M' . $rowIndex);
+		$array_data[$rowIndex]['M'] = $cell->getCalculatedValue();
+		$cell = $sheet->getCell('N' . $rowIndex);
+		$array_data[$rowIndex]['N'] = $cell->getCalculatedValue();
+		$cell = $sheet->getCell('O' . $rowIndex);
+		$array_data[$rowIndex]['O'] = $cell->getCalculatedValue();
+		$cell = $sheet->getCell('P' . $rowIndex);
+		$array_data[$rowIndex]['P'] = $cell->getCalculatedValue();
+		$cell = $sheet->getCell('Q' . $rowIndex);
+		$array_data[$rowIndex]['Q'] = $cell->getCalculatedValue();
+		$cell = $sheet->getCell('R' . $rowIndex);
+		$array_data[$rowIndex]['R'] = $cell->getCalculatedValue();
+		$cell = $sheet->getCell('S' . $rowIndex);
+		$array_data[$rowIndex]['S'] = $cell->getCalculatedValue();
+		$cell = $sheet->getCell('T' . $rowIndex);
+		$array_data[$rowIndex]['T'] = $cell->getCalculatedValue();
+		$cell = $sheet->getCell('U' . $rowIndex);
+		$array_data[$rowIndex]['U'] = $cell->getCalculatedValue();
+		$cell = $sheet->getCell('V' . $rowIndex);
+		$array_data[$rowIndex]['V'] = $cell->getCalculatedValue();
+		$cell = $sheet->getCell('W' . $rowIndex);
+		$array_data[$rowIndex]['W'] = $cell->getCalculatedValue();
+		$cell = $sheet->getCell('X' . $rowIndex);
+		$array_data[$rowIndex]['X'] = $cell->getCalculatedValue();
+		$cell = $sheet->getCell('Y' . $rowIndex);
+		$array_data[$rowIndex]['Y'] = $cell->getCalculatedValue();
+		$cell = $sheet->getCell('Z' . $rowIndex);
+		$array_data[$rowIndex]['Z'] = $cell->getCalculatedValue();
+		$cell = $sheet->getCell('AA' . $rowIndex);
+		$array_data[$rowIndex]['AA'] = $cell->getCalculatedValue();
+		$cell = $sheet->getCell('AB' . $rowIndex);
+		$array_data[$rowIndex]['AB'] = $cell->getCalculatedValue();
+		$cell = $sheet->getCell('AC' . $rowIndex);
+		$array_data[$rowIndex]['AC'] = $cell->getCalculatedValue();
+		$cell = $sheet->getCell('AD' . $rowIndex);
+		$array_data[$rowIndex]['AD'] = $cell->getCalculatedValue();
+		$cell = $sheet->getCell('AE' . $rowIndex);
+		$array_data[$rowIndex]['AE'] = $cell->getCalculatedValue();
+		$cell = $sheet->getCell('AF' . $rowIndex);
+		$array_data[$rowIndex]['AF'] = $cell->getCalculatedValue();
+		$cell = $sheet->getCell('AG' . $rowIndex);
+		$array_data[$rowIndex]['AG'] = $cell->getCalculatedValue();
+		$cell = $sheet->getCell('AH' . $rowIndex);
+		$array_data[$rowIndex]['AH'] = $cell->getCalculatedValue();
+		$cell = $sheet->getCell('AI' . $rowIndex);
+		$array_data[$rowIndex]['AI'] = $cell->getCalculatedValue();
+		$cell = $sheet->getCell('AJ' . $rowIndex);
+		$array_data[$rowIndex]['AJ'] = $cell->getCalculatedValue();
+		$cell = $sheet->getCell('AK' . $rowIndex);
+		$array_data[$rowIndex]['AK'] = $cell->getCalculatedValue();
+		$cell = $sheet->getCell('AL' . $rowIndex);
+		$array_data[$rowIndex]['AL'] = $cell->getCalculatedValue();
+		$cell = $sheet->getCell('AM' . $rowIndex);
+		$array_data[$rowIndex]['AM'] = $cell->getCalculatedValue();
 	}
-	foreach($lists as $list){
- 		echo '<table border="1">';
- 		// Перебор строк
- 		foreach($list as $row){
-   			echo '<tr>';
-   			// Перебор столбцов
-   			foreach($row as $col){
-     			echo '<td>'.$col.'</td>';
- 			}
- 			echo '</tr>';
- 		}
- 		echo '</table>';
-	}
+	
+	print_r($array_data);
 }
 add_action('wp_ajax_importExcel', 'importExcel');
 add_action('wp_ajax_nopriv_importExcel', 'importExcel');

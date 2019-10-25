@@ -4,6 +4,8 @@ $(document).ready(function () {
         url: my_ajax_object.ajax_url,
         // dataType: 'json',
         data: { action: 'importExcel' },
-        // success: makeTable,
+        // success: function (response) {
+        //     console.log(response);
+        // },
     });
 });
