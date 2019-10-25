@@ -116,6 +116,17 @@ function innovativepotential_widgets_init() {
 }
 add_action( 'widgets_init', 'innovativepotential_widgets_init' );
 
+
+//add url for ajax
+function my_enqueue() {
+
+	wp_enqueue_script( 'ajax-script', get_template_directory_uri() . '/js/ajax-req.js', array('jquery') );
+
+    wp_localize_script( 'ajax-script', 'my_ajax_object',
+            array( 'ajax_url' => admin_url( 'admin-ajax.php' ) ) );
+}
+add_action( 'wp_enqueue_scripts', 'my_enqueue' );
+
 /**
  * Enqueue scripts and styles.
  */
@@ -123,14 +134,59 @@ function innovativepotential_scripts() {
 	wp_enqueue_style( 'innovativepotential-style', get_stylesheet_uri() );
 
 	wp_enqueue_script( 'innovativepotential-navigation', get_template_directory_uri() . '/js/navigation.js', array(), '20151215', true );
+	wp_enqueue_script( 'jquery-script', get_template_directory_uri() .'/js/jquery-3.4.1.min.js' , array(), null, false );
 
 	wp_enqueue_script( 'innovativepotential-skip-link-focus-fix', get_template_directory_uri() . '/js/skip-link-focus-fix.js', array(), '20151215', true );
+	wp_enqueue_script( 'general-script', get_template_directory_uri() .'/js/general.js' , array(), null, false );
 
 	if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
 		wp_enqueue_script( 'comment-reply' );
 	}
 }
 add_action( 'wp_enqueue_scripts', 'innovativepotential_scripts' );
+
+
+function importExcel()
+{
+	echo 'proverka';
+	return;
+	// library
+	include_once(get_template_directory() . '/inc/PHPExcel/PHPExcel.php');
+	include_once(get_template_directory() . '/inc/PHPExcel/PHPExcel/Writer/Excel5.php');
+	include_once(get_template_directory() . '/inc/PHPExcel/PHPExcel/Writer/Excel2007.php');
+	include_once(get_template_directory() . '/inc/PHPExcel/PHPExcel/IOFactory.php');
+
+	$excel = PHPExcel_IOFactory::load(get_template_directory().'Пример данных по ДС.xlsx');
+
+	Foreach($excel ->getWorksheetIterator() as $worksheet) {
+ 		$lists[] = $worksheet->toArray();
+	}
+	foreach($lists as $list){
+ 		echo '<table border="1">';
+ 		// Перебор строк
+ 		foreach($list as $row){
+   			echo '<tr>';
+   			// Перебор столбцов
+   			foreach($row as $col){
+     			echo '<td>'.$col.'</td>';
+ 			}
+ 			echo '</tr>';
+ 		}
+ 		echo '</table>';
+	}
+}
+add_action('wp_ajax_importExcel', 'importExcel');
+add_action('wp_ajax_nopriv_importExcel', 'importExcel');
+
+
+
+
+
+
+
+
+
+
 
 /**
  * Implement the Custom Header feature.
