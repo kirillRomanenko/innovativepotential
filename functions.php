@@ -256,6 +256,10 @@ try {
 		$array_data[$rowIndex]['AL'] = $cell->getCalculatedValue();
 		$cell = $sheet->getCell('AM' . $rowIndex);
 		$array_data[$rowIndex]['AM'] = $cell->getCalculatedValue();
+		if ($array_data[$rowIndex]['AM'] == '') {
+			unset($array_data[$rowIndex]);
+			break;
+		}
 	}
 	
 	print_r($array_data);
