@@ -148,8 +148,6 @@ add_action( 'wp_enqueue_scripts', 'innovativepotential_scripts' );
 
 function importExcel()
 {
-	// echo 'proverka';
-	// return;
 	// library
 	include_once(get_template_directory() . '/inc/PHPExcel/PHPExcel.php');
 	include_once(get_template_directory() . '/inc/PHPExcel/PHPExcel/Writer/Excel5.php');
@@ -171,6 +169,8 @@ try {
 	$objPHPExcel->setActiveSheetIndex(0);
 	$sheet = $objPHPExcel ->getActiveSheet();
 	$array_data = array();
+	$array_answerWeight = array(0.05,0.03,0.05,0.03,0.05,0.05,0.03,0.05,0.03,0.03,0.03,0.05,0.03,0.03,0.05,0.03,0.03,0.03,1,
+								0.05,0.05,0.03,0.03,0.03,0.05,0.03,0.05,0.05,0.05,0.03,0.03,0.03,0.05,0.03,0.05);
 	foreach($sheet->getRowIterator() as $row){
 
 		$rowIndex = $row->getRowIndex ();
@@ -178,14 +178,19 @@ try {
 			$rowIndex = $row->getRowIndex() + 1;
 		}
 		$array_data[$rowIndex] = array(
+			'A'=>'', 'B'=>'', 'C'=>'',
 			'E'=>'','F'=>'','G'=>'','H'=>'','I'=>'','J'=>'','K'=>'','L'=>'','M'=>'','N'=>'','O'=>'',
 			'P'=>'','Q'=>'','R'=>'','S'=>'','T'=>'','U'=>'','V'=>'','W'=>'','X'=>'','Y'=>'','Z'=>'',
 			'AA'=>'','AB'=>'','AC'=>'','AD'=>'','AE'=>'','AF'=>'','AG'=>'','AH'=>'','AI'=>'','AJ'=>'','AK'=>'',
 			'AL'=>'','AM'=>'',
 		);
 		
-		// $cell = $sheet->getCell('D' . $rowIndex);
-		// $array_data[$rowIndex]['D'] = $cell->getCalculatedValue();
+		$cell = $sheet->getCell('A' . $rowIndex);
+		$array_data[$rowIndex]['A'] = $cell->getCalculatedValue();
+		$cell = $sheet->getCell('B' . $rowIndex);
+		$array_data[$rowIndex]['B'] = $cell->getCalculatedValue();
+		$cell = $sheet->getCell('C' . $rowIndex);
+		$array_data[$rowIndex]['C'] = $cell->getCalculatedValue();
 		$cell = $sheet->getCell('E' . $rowIndex);
 		$array_data[$rowIndex]['E'] = $cell->getCalculatedValue();
 		$cell = $sheet->getCell('F' . $rowIndex);
@@ -258,11 +263,15 @@ try {
 		$array_data[$rowIndex]['AM'] = $cell->getCalculatedValue();
 		if ($array_data[$rowIndex]['AM'] == '') {
 			unset($array_data[$rowIndex]);
+			
 			break;
 		}
 	}
 	
 	print_r($array_data);
+	$countString = $rowIndex - 2;
+	echo $countString;
+	print_r($array_answerWeight);
 }
 add_action('wp_ajax_importExcel', 'importExcel');
 add_action('wp_ajax_nopriv_importExcel', 'importExcel');
