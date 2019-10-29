@@ -169,6 +169,7 @@ try {
 	$objPHPExcel->setActiveSheetIndex(0);
 	$sheet = $objPHPExcel ->getActiveSheet();
 	$array_data = array();
+	$array_dataRate = array();
 	$array_answerWeight = array(0.05,0.03,0.05,0.03,0.05,0.05,0.03,0.05,0.03,0.03,0.03,0.05,0.03,0.03,0.05,0.03,0.03,0.03,1,
 								0.05,0.05,0.03,0.03,0.03,0.05,0.03,0.05,0.05,0.05,0.03,0.03,0.03,0.05,0.03,0.05);
 	foreach($sheet->getRowIterator() as $row){
@@ -267,11 +268,28 @@ try {
 			break;
 		}
 	}
-	
-	print_r($array_data);
+	$array_dataSize = count($array_data);
+	$countData = 0;
+	for($count = 0; $count < $array_dataSize; ++$count){
+		if ($count == 0) {
+			$countData = $count + 2;
+		}
+		$array_dataRate[$count] = array(
+			'A'=>'', 'B'=>'', 'C'=>'',
+			'E'=>'','F'=>'','G'=>'','H'=>'','I'=>'','J'=>'','K'=>'','L'=>'','M'=>'','N'=>'','O'=>'',
+			'P'=>'','Q'=>'','R'=>'','S'=>'','T'=>'','U'=>'','V'=>'','W'=>'','X'=>'','Y'=>'','Z'=>'',
+			'AA'=>'','AB'=>'','AC'=>'','AD'=>'','AE'=>'','AF'=>'','AG'=>'','AH'=>'','AI'=>'','AJ'=>'','AK'=>'',
+			'AL'=>'','AM'=>'',
+		);
+		$array_dataRate[$count]['E'] = $array_data[$countData]['E'] * $array_answerWeight[0];
+		$countData = $countData + 1;
+	}
+	// print_r($array_data);
 	$countString = $rowIndex - 2;
 	echo $countString;
-	print_r($array_answerWeight);
+	// print_r($array_answerWeight);
+
+	print_r($array_dataRate);
 }
 add_action('wp_ajax_importExcel', 'importExcel');
 add_action('wp_ajax_nopriv_importExcel', 'importExcel');
