@@ -170,7 +170,7 @@ try {
 	$sheet = $objPHPExcel ->getActiveSheet();
 	$array_data = array();
 	$array_dataRate = array();
-	$array_answerWeight = array(0.05,0.03,0.05,0.03,0.05,0.05,0.03,0.05,0.03,0.03,0.03,0.05,0.03,0.03,0.05,0.03,0.03,0.03,1,
+	$array_answerWeight = array(1,1,1,0.05,0.03,0.05,0.03,0.05,0.05,0.03,0.05,0.03,0.03,0.03,0.05,0.03,0.03,0.05,0.03,0.03,0.03,1,
 								0.05,0.05,0.03,0.03,0.03,0.05,0.03,0.05,0.05,0.05,0.03,0.03,0.03,0.05,0.03,0.05);
 	foreach($sheet->getRowIterator() as $row){
 
@@ -274,7 +274,7 @@ try {
 						'AA','AB','AC','AD','AE','AF','AG','AH','AI','AJ','AK','AL','AM');
 	$array_colSize = count($array_col);
 	$array_x = array();
-	for($count = 0; $count < $array_dataSize; ++$count){
+	for($count = 0; $count < $array_dataSize; $count++){
 		if ($count == 0) {
 			$countData = $count + 2;
 		}
@@ -306,25 +306,17 @@ try {
 			if ($col == 'A' || $col == 'B' || $col == 'C') {
 				$array_x[$i] = $array_dataRate[$i][$col];
 			} else {
-				// $array_x[$i] = $array_dataRate[$i][$col] + $array_dataRate[$i][$colNext];
 				$array_x[$i] = array_sum($array_dataRate[$i]);
-				// $array_dataRate[$i]['AN'] = $array_x[$i];
 			}
 		}
 		$array_dataRate[$i]['AN'] = $array_x[$i];
 		
 	}
-	// echo $array_dataRateSize;
-	print_r($array_data);
 	print_r($array_x);
-	// print_r($array_data);
 	$countString = $rowIndex - 2;
-	// echo $countString;
-	// print_r($array_answerWeight);
 
-	// print_r($array_dataRate);
+	print_r($array_dataRate);
 
-	// print_r($array_x);
 }
 add_action('wp_ajax_importExcel', 'importExcel');
 add_action('wp_ajax_nopriv_importExcel', 'importExcel');
