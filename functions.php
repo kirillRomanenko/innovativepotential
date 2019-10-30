@@ -283,7 +283,7 @@ try {
 			'E'=>'','F'=>'','G'=>'','H'=>'','I'=>'','J'=>'','K'=>'','L'=>'','M'=>'','N'=>'','O'=>'',
 			'P'=>'','Q'=>'','R'=>'','S'=>'','T'=>'','U'=>'','V'=>'','W'=>'','X'=>'','Y'=>'','Z'=>'',
 			'AA'=>'','AB'=>'','AC'=>'','AD'=>'','AE'=>'','AF'=>'','AG'=>'','AH'=>'','AI'=>'','AJ'=>'','AK'=>'',
-			'AL'=>'','AM'=>'',
+			'AL'=>'','AM'=>'', 'AN'=>''
 		);
 		for ($i=0; $i < $array_colSize; $i++) { 
 			$col = $array_col[$i];
@@ -299,12 +299,33 @@ try {
 		
 		$countData = $countData + 1;
 	}
+	$array_dataRateSize = count($array_dataRate);
+	for ($i=0; $i < $array_dataRateSize; $i++) { 
+		for ($j=0; $j < $array_colSize; $j++) { 
+			$col = $array_col[$j];
+			echo $col;
+			if ($col == 'A' || $col == 'B' || $col == 'C') {
+				$array_x[$i] = $array_dataRate[$i][$col];
+				echo $array_x[$i];
+			} else {
+				// $array_x[$i] = $array_dataRate[$i][$col] + $array_dataRate[$i][$colNext];
+				$array_x[$i] = array_sum($array_dataRate[$i]);
+			}
+		}
+		
+		
+	}
+	// echo $array_dataRateSize;
+	print_r($array_dataRate);
+	print_r($array_x);
 	// print_r($array_data);
 	$countString = $rowIndex - 2;
 	// echo $countString;
 	// print_r($array_answerWeight);
 
-	print_r($array_dataRate);
+	// print_r($array_dataRate);
+
+	// print_r($array_x);
 }
 add_action('wp_ajax_importExcel', 'importExcel');
 add_action('wp_ajax_nopriv_importExcel', 'importExcel');
