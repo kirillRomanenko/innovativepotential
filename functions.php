@@ -303,20 +303,19 @@ try {
 	for ($i=0; $i < $array_dataRateSize; $i++) { 
 		for ($j=0; $j < $array_colSize; $j++) { 
 			$col = $array_col[$j];
-			echo $col;
 			if ($col == 'A' || $col == 'B' || $col == 'C') {
 				$array_x[$i] = $array_dataRate[$i][$col];
-				echo $array_x[$i];
 			} else {
 				// $array_x[$i] = $array_dataRate[$i][$col] + $array_dataRate[$i][$colNext];
 				$array_x[$i] = array_sum($array_dataRate[$i]);
+				// $array_dataRate[$i]['AN'] = $array_x[$i];
 			}
 		}
-		
+		$array_dataRate[$i]['AN'] = $array_x[$i];
 		
 	}
 	// echo $array_dataRateSize;
-	print_r($array_dataRate);
+	print_r($array_data);
 	print_r($array_x);
 	// print_r($array_data);
 	$countString = $rowIndex - 2;
