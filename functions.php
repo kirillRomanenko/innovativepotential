@@ -312,10 +312,36 @@ try {
 		$array_dataRate[$i]['AN'] = $array_x[$i];
 		
 	}
-	print_r($array_x);
+	// print_r($array_x);
 	$countString = $rowIndex - 2;
 
-	print_r($array_dataRate);
+	// print_r($array_dataRate);
+	$array_B1 = array();
+	$B1 = null;
+	$array_B2 = array();
+	$B2 = null;
+	$array_B3 = array();
+	$B3 = null;
+	for ($i=0; $i < $array_dataRateSize; $i++) { 
+		if ($array_dataRate[$i]['A'] == 'Частная' && $array_dataRate[$i]['B'] == 'Малое') {
+			$array_B1[$i] = $array_dataRate[$i]['AN'];
+			$B1 = array_sum($array_B1);
+		} 
+		if ($array_dataRate[$i]['A'] == 'Частная' && $array_dataRate[$i]['B'] == 'Среднее'){
+			$array_B2[$i] = $array_dataRate[$i]['AN'];
+			$B2 = array_sum($array_B2);
+		}
+		if ($array_dataRate[$i]['A'] == 'Частная' && $array_dataRate[$i]['B'] == 'Крупное'){
+			$array_B3[$i] = $array_dataRate[$i]['AN'];
+			$B3 = array_sum($array_B3);
+		}
+	}
+	print_r($B1);
+	print_r($array_B1);
+	print_r($B2);
+	print_r($array_B2);
+	print_r($B3);
+	print_r($array_B3);
 
 }
 add_action('wp_ajax_importExcel', 'importExcel');
