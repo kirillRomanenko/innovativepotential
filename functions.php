@@ -336,12 +336,22 @@ try {
 			$B3 = array_sum($array_B3);
 		}
 	}
-	print_r($B1);
-	print_r($array_B1);
-	print_r($B2);
-	print_r($array_B2);
-	print_r($B3);
-	print_r($array_B3);
+	// print_r($B1);
+	// print_r($array_B1);
+	// print_r($B2);
+	// print_r($array_B2);
+	// print_r($B3);
+	// print_r($array_B3);
+	$array_B1Count = count($array_B1);
+	$array_B2Count = count($array_B2);
+	$array_B3Count = count($array_B3);
+
+	$DC1 = ($B1 - 1.04 * $array_B1Count)/((5.84 * $array_B1Count)-(1.04 * $array_B1Count));
+	$DC2 = ($B2 - 1.04 * $array_B2Count)/((5.84 * $array_B2Count)-(1.04 * $array_B2Count));
+	$DC3 = ($B3 - 1.04 * $array_B3Count)/((5.84 * $array_B3Count)-(1.04 * $array_B3Count));
+	print_r($DC1 . '\n');
+	print_r($DC2 . '\n');
+	print_r($DC3);
 
 }
 add_action('wp_ajax_importExcel', 'importExcel');
