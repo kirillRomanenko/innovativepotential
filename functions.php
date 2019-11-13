@@ -317,11 +317,18 @@ try {
 
 	// print_r($array_dataRate);
 	$array_B1 = array();
+	$countB = 0;
 	$B1 = null;
 	$array_B2 = array();
 	$B2 = null;
 	$array_B3 = array();
 	$B3 = null;
+	$array_B4 = array();
+	$B4 = null;
+	$array_B5 = array();
+	$B5 = null;
+	$array_B6 = array();
+	$B6 = null;
 	for ($i=0; $i < $array_dataRateSize; $i++) { 
 		if ($array_dataRate[$i]['A'] == 'Частная' && $array_dataRate[$i]['B'] == 'Малое') {
 			$array_B1[$i] = $array_dataRate[$i]['AN'];
@@ -335,13 +342,20 @@ try {
 			$array_B3[$i] = $array_dataRate[$i]['AN'];
 			$B3 = array_sum($array_B3);
 		}
+		if ($array_dataRate[$i]['A'] == 'Государственная' && $array_dataRate[$i]['B'] == 'Малое'){
+			$array_B4[$i] = $array_dataRate[$i]['AN'];
+			$B4 = array_sum($array_B4);
+		}
+		if ($array_dataRate[$i]['A'] == 'Государственная' && $array_dataRate[$i]['B'] == 'Среднее'){
+			$array_B5[$i] = $array_dataRate[$i]['AN'];
+			$B5 = array_sum($array_B5);
+		}
+		if ($array_dataRate[$i]['A'] == 'Государственная' && $array_dataRate[$i]['B'] == 'Крупное'){
+			$array_B6[$i] = $array_dataRate[$i]['AN'];
+			$B6 = array_sum($array_B6);
+		}
 	}
-	// print_r($B1);
-	// print_r($array_B1);
-	// print_r($B2);
-	// print_r($array_B2);
-	// print_r($B3);
-	// print_r($array_B3);
+	
 	$array_B1Count = count($array_B1);
 	$array_B2Count = count($array_B2);
 	$array_B3Count = count($array_B3);
@@ -349,9 +363,29 @@ try {
 	$DC1 = ($B1 - 1.04 * $array_B1Count)/((5.84 * $array_B1Count)-(1.04 * $array_B1Count));
 	$DC2 = ($B2 - 1.04 * $array_B2Count)/((5.84 * $array_B2Count)-(1.04 * $array_B2Count));
 	$DC3 = ($B3 - 1.04 * $array_B3Count)/((5.84 * $array_B3Count)-(1.04 * $array_B3Count));
+	$DC = null;
+	if ($B1 != null) {
+		$countB = $countB + 1;
+	}
+	if ($B2 != null) {
+		$countB = $countB + 1;
+	}
+	if ($B3 != null) {
+		$countB = $countB + 1;
+	}
+	if ($B4 != null) {
+		$countB = $countB + 1;
+	}
+	if ($B5 != null) {
+		$countB = $countB + 1;
+	}
+	if ($B6 != null) {
+		$countB = $countB + 1;
+	}
 	print_r($DC1 . '\n');
 	print_r($DC2 . '\n');
-	print_r($DC3);
+	print_r($DC3 . '\n');
+	print_r($countB);
 
 }
 add_action('wp_ajax_importExcel', 'importExcel');
