@@ -146,7 +146,7 @@ function innovativepotential_scripts() {
 add_action( 'wp_enqueue_scripts', 'innovativepotential_scripts' );
 
 
-function importExcel()
+function importExcelDA()
 {
 	// library
 	include_once(get_template_directory() . '/inc/PHPExcel/PHPExcel.php');
@@ -312,10 +312,83 @@ try {
 		$array_dataRate[$i]['AN'] = $array_x[$i];
 		
 	}
-	// print_r($array_x);
 	$countString = $rowIndex - 2;
 
-	// print_r($array_dataRate);
+	// $array_B1 = array();
+	// $countB = 0;
+	// $B1 = null;
+	// $array_B2 = array();
+	// $B2 = null;
+	// $array_B3 = array();
+	// $B3 = null;
+	// $array_B4 = array();
+	// $B4 = null;
+	// $array_B5 = array();
+	// $B5 = null;
+	// $array_B6 = array();
+	// $B6 = null;
+	// for ($i=0; $i < $array_dataRateSize; $i++) { 
+	// 	if ($array_dataRate[$i]['A'] == 'Частная' && $array_dataRate[$i]['B'] == 'Малое') {
+	// 		$array_B1[$i] = $array_dataRate[$i]['AN'];
+	// 		$B1 = array_sum($array_B1);
+	// 	} 
+	// 	if ($array_dataRate[$i]['A'] == 'Частная' && $array_dataRate[$i]['B'] == 'Среднее'){
+	// 		$array_B2[$i] = $array_dataRate[$i]['AN'];
+	// 		$B2 = array_sum($array_B2);
+	// 	}
+	// 	if ($array_dataRate[$i]['A'] == 'Частная' && $array_dataRate[$i]['B'] == 'Крупное'){
+	// 		$array_B3[$i] = $array_dataRate[$i]['AN'];
+	// 		$B3 = array_sum($array_B3);
+	// 	}
+	// 	if ($array_dataRate[$i]['A'] == 'Государственная' && $array_dataRate[$i]['B'] == 'Малое'){
+	// 		$array_B4[$i] = $array_dataRate[$i]['AN'];
+	// 		$B4 = array_sum($array_B4);
+	// 	}
+	// 	if ($array_dataRate[$i]['A'] == 'Государственная' && $array_dataRate[$i]['B'] == 'Среднее'){
+	// 		$array_B5[$i] = $array_dataRate[$i]['AN'];
+	// 		$B5 = array_sum($array_B5);
+	// 	}
+	// 	if ($array_dataRate[$i]['A'] == 'Государственная' && $array_dataRate[$i]['B'] == 'Крупное'){
+	// 		$array_B6[$i] = $array_dataRate[$i]['AN'];
+	// 		$B6 = array_sum($array_B6);
+	// 	}
+	// }
+	
+	// $array_B1Count = count($array_B1);
+	// $array_B2Count = count($array_B2);
+	// $array_B3Count = count($array_B3);
+
+	// $DC1 = ($B1 - 1.04 * $array_B1Count)/((5.84 * $array_B1Count)-(1.04 * $array_B1Count));
+	// $DC2 = ($B2 - 1.04 * $array_B2Count)/((5.84 * $array_B2Count)-(1.04 * $array_B2Count));
+	// $DC3 = ($B3 - 1.04 * $array_B3Count)/((5.84 * $array_B3Count)-(1.04 * $array_B3Count));
+	// $DC = null;
+	// if ($B1 != null) {
+	// 	$countB = $countB + 1;
+	// }
+	// if ($B2 != null) {
+	// 	$countB = $countB + 1;
+	// }
+	// if ($B3 != null) {
+	// 	$countB = $countB + 1;
+	// }
+	// if ($B4 != null) {
+	// 	$countB = $countB + 1;
+	// }
+	// if ($B5 != null) {
+	// 	$countB = $countB + 1;
+	// }
+	// if ($B6 != null) {
+	// 	$countB = $countB + 1;
+	// }
+	
+	return $array_dataRate;
+}
+add_action('wp_ajax_importExcelDA', 'importExcelDA');
+add_action('wp_ajax_nopriv_importExcelDA', 'importExcelDA');
+
+function settlementByIndustry(){ // Расчет с учетом отраслевого разреза
+	print_r('settlementByIndustry');
+	$array_dataRate = importExcelDA();
 	$array_B1 = array();
 	$countB = 0;
 	$B1 = null;
@@ -327,43 +400,43 @@ try {
 	$B4 = null;
 	$array_B5 = array();
 	$B5 = null;
-	$array_B6 = array();
-	$B6 = null;
+	$array_dataRateSize = count($array_dataRate);
 	for ($i=0; $i < $array_dataRateSize; $i++) { 
-		if ($array_dataRate[$i]['A'] == 'Частная' && $array_dataRate[$i]['B'] == 'Малое') {
+		if ($array_dataRate[$i]['C'] == 'Консультации в сфере ИТ') {
 			$array_B1[$i] = $array_dataRate[$i]['AN'];
 			$B1 = array_sum($array_B1);
-		} 
-		if ($array_dataRate[$i]['A'] == 'Частная' && $array_dataRate[$i]['B'] == 'Среднее'){
+		}
+		if ($array_dataRate[$i]['C'] == 'Разработка ПО') {
 			$array_B2[$i] = $array_dataRate[$i]['AN'];
 			$B2 = array_sum($array_B2);
 		}
-		if ($array_dataRate[$i]['A'] == 'Частная' && $array_dataRate[$i]['B'] == 'Крупное'){
+		if ($array_dataRate[$i]['C'] == 'Производсвто, строительство') {
 			$array_B3[$i] = $array_dataRate[$i]['AN'];
 			$B3 = array_sum($array_B3);
 		}
-		if ($array_dataRate[$i]['A'] == 'Государственная' && $array_dataRate[$i]['B'] == 'Малое'){
+		if ($array_dataRate[$i]['C'] == 'Производство и торговля товаров сельскохозяйственного назначения') {
 			$array_B4[$i] = $array_dataRate[$i]['AN'];
 			$B4 = array_sum($array_B4);
 		}
-		if ($array_dataRate[$i]['A'] == 'Государственная' && $array_dataRate[$i]['B'] == 'Среднее'){
+		if ($array_dataRate[$i]['C'] == 'Производство первичных элементов, батарей первичных элементов и их частей') {
 			$array_B5[$i] = $array_dataRate[$i]['AN'];
 			$B5 = array_sum($array_B5);
 		}
-		if ($array_dataRate[$i]['A'] == 'Государственная' && $array_dataRate[$i]['B'] == 'Крупное'){
-			$array_B6[$i] = $array_dataRate[$i]['AN'];
-			$B6 = array_sum($array_B6);
-		}
+		
 	}
-	
+
 	$array_B1Count = count($array_B1);
 	$array_B2Count = count($array_B2);
 	$array_B3Count = count($array_B3);
+	$array_B4Count = count($array_B4);
+	$array_B5Count = count($array_B5);
 
 	$DC1 = ($B1 - 1.04 * $array_B1Count)/((5.84 * $array_B1Count)-(1.04 * $array_B1Count));
 	$DC2 = ($B2 - 1.04 * $array_B2Count)/((5.84 * $array_B2Count)-(1.04 * $array_B2Count));
 	$DC3 = ($B3 - 1.04 * $array_B3Count)/((5.84 * $array_B3Count)-(1.04 * $array_B3Count));
-	$DC = null;
+	$DC4 = ($B4 - 1.04 * $array_B4Count)/((5.84 * $array_B4Count)-(1.04 * $array_B4Count));
+	$DC5 = ($B5 - 1.04 * $array_B5Count)/((5.84 * $array_B5Count)-(1.04 * $array_B5Count));
+	$countB = 0;
 	if ($B1 != null) {
 		$countB = $countB + 1;
 	}
@@ -379,19 +452,13 @@ try {
 	if ($B5 != null) {
 		$countB = $countB + 1;
 	}
-	if ($B6 != null) {
-		$countB = $countB + 1;
-	}
-	print_r($DC1 . '\n');
-	print_r($DC2 . '\n');
-	print_r($DC3 . '\n');
-	print_r($countB);
-
+	$DC = null;
+	$DC = ($B1 + $B2 + $B3 + $B4 + $B5) / $countB;
+	print_r($DC);
+	
 }
-add_action('wp_ajax_importExcel', 'importExcel');
-add_action('wp_ajax_nopriv_importExcel', 'importExcel');
-
-
+add_action('wp_ajax_settlementByIndustry', 'settlementByIndustry');
+add_action('wp_ajax_nopriv_settlementByIndustry', 'settlementByIndustry');
 
 
 
