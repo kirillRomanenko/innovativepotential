@@ -387,7 +387,6 @@ add_action('wp_ajax_importExcelDA', 'importExcelDA');
 add_action('wp_ajax_nopriv_importExcelDA', 'importExcelDA');
 
 function settlementByIndustry(){ // Расчет с учетом отраслевого разреза
-	print_r('settlementByIndustry');
 	$array_dataRate = importExcelDA();
 	$array_B1 = array();
 	$countB = 0;
@@ -459,6 +458,44 @@ function settlementByIndustry(){ // Расчет с учетом отрасле�
 }
 add_action('wp_ajax_settlementByIndustry', 'settlementByIndustry');
 add_action('wp_ajax_nopriv_settlementByIndustry', 'settlementByIndustry');
+
+function settlementBasedOnOwnership(){ // Расчет с учетом формы собственности
+	$array_dataRate = importExcelDA();
+	$array_B1 = array();
+	$B1 = null;
+	$array_B2 = array();
+	$B2 = null;
+	$array_B1Count = count($array_B1);
+	$array_B2Count = count($array_B2);
+	$DC1 = null;
+	$DC2 = null;
+	$DC = null;
+	$countB = 0;
+	$array_dataRateSize = count($array_dataRate);
+	for ($i=0; $i < $array_dataRateSize; $i++) { 
+		if ($array_dataRate[$i]['A'] == 'Частная') {
+			$array_B1[$i] = $array_dataRate[$i]['AN'];
+			$B1 = array_sum($array_B1);
+		}
+		if ($array_dataRate[$i]['A'] == 'Государственная') {
+			$array_B2[$i] = $array_dataRate[$i]['AN'];
+			$B2 = array_sum($array_B2);
+		}
+	}
+	if ($B1 != null) {
+		$DC1 = ($B1 - 1.04 * $array_B1Count)/((5.84 * $array_B1Count)-(1.04 * $array_B1Count));
+		$countB = $countB + 1;
+	}
+	if ($B2 != null) {
+		$DC2 = ($B2 - 1.04 * $array_B2Count)/((5.84 * $array_B2Count)-(1.04 * $array_B2Count));
+		$countB = $countB + 1;
+	}
+	$DC = ($B1 + $B2) / $countB;
+	// print_r($array_dataRate);
+	print_r($DC);
+}
+add_action('wp_ajax_settlementBasedOnOwnership', 'settlementBasedOnOwnership');
+add_action('wp_ajax_nopriv_settlementBasedOnOwnership', 'settlementBasedOnOwnership');
 
 
 
