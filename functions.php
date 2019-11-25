@@ -454,6 +454,7 @@ function settlementByIndustry(){ // Расчет с учетом отрасле�
 	$DC = null;
 	$DC = ($B1 + $B2 + $B3 + $B4 + $B5) / $countB;
 	print_r($DC);
+	wp_die();
 	
 }
 add_action('wp_ajax_settlementByIndustry', 'settlementByIndustry');
@@ -465,8 +466,6 @@ function settlementBasedOnOwnership(){ // Расчет с учетом форм�
 	$B1 = null;
 	$array_B2 = array();
 	$B2 = null;
-	$array_B1Count = count($array_B1);
-	$array_B2Count = count($array_B2);
 	$DC1 = null;
 	$DC2 = null;
 	$DC = null;
@@ -482,6 +481,8 @@ function settlementBasedOnOwnership(){ // Расчет с учетом форм�
 			$B2 = array_sum($array_B2);
 		}
 	}
+	$array_B1Count = count($array_B1);
+	$array_B2Count = count($array_B2);
 	if ($B1 != null) {
 		$DC1 = ($B1 - 1.04 * $array_B1Count)/((5.84 * $array_B1Count)-(1.04 * $array_B1Count));
 		$countB = $countB + 1;
@@ -493,9 +494,61 @@ function settlementBasedOnOwnership(){ // Расчет с учетом форм�
 	$DC = ($B1 + $B2) / $countB;
 	// print_r($array_dataRate);
 	print_r($DC);
+	wp_die();
 }
 add_action('wp_ajax_settlementBasedOnOwnership', 'settlementBasedOnOwnership');
 add_action('wp_ajax_nopriv_settlementBasedOnOwnership', 'settlementBasedOnOwnership');
+
+function sizeBasedCalculation(){ //Расчет с учетом размера предприятия
+	$array_dataRate = importExcelDA();
+	$array_B1 = array();
+	$B1 = null;
+	$array_B2 = array();
+	$B2 = null;
+	$array_B3 = array();
+	$B3 = null;
+	$DC1 = null;
+	$DC2 = null;
+	$DC3 = null;
+	$DC = null;
+	$countB = 0;
+	$array_dataRateSize = count($array_dataRate);
+	for ($i=0; $i < $array_dataRateSize; $i++) { 
+		if ($array_dataRate[$i]['B'] == 'Малое') {
+			$array_B1[$i] = $array_dataRate[$i]['AN'];
+			$B1 = array_sum($array_B1);
+		}
+		if ($array_dataRate[$i]['B'] == 'Среднее') {
+			$array_B2[$i] = $array_dataRate[$i]['AN'];
+			$B2 = array_sum($array_B2);
+		}
+		if ($array_dataRate[$i]['B'] == 'Крупное') {
+			$array_B3[$i] = $array_dataRate[$i]['AN'];
+			$B3 = array_sum($array_B3);
+		}
+	}
+	$array_B1Count = count($array_B1);
+	$array_B2Count = count($array_B2);
+	$array_B3Count = count($array_B3);
+	if ($B1 != null) {
+		$DC1 = ($B1 - 1.04 * $array_B1Count)/((5.84 * $array_B1Count)-(1.04 * $array_B1Count));
+		$countB = $countB + 1;
+	}
+	if ($B2 != null) {
+		$DC2 = ($B2 - 1.04 * $array_B2Count)/((5.84 * $array_B2Count)-(1.04 * $array_B2Count));
+		$countB = $countB + 1;
+	}
+	if ($B3 != null) {
+		$DC3 = ($B3 - 1.04 * $array_B3Count)/((5.84 * $array_B3Count)-(1.04 * $array_B3Count));
+		$countB = $countB + 1;
+	}
+	$DC = ($B1 + $B2 + $B3) / $countB;
+	// print_r($array_dataRate);
+	echo $DC;
+	wp_die();
+}
+add_action('wp_ajax_sizeBasedCalculation', 'sizeBasedCalculation');
+add_action('wp_ajax_nopriv_sizeBasedCalculation', 'sizeBasedCalculation');
 
 
 
