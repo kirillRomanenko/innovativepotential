@@ -413,7 +413,7 @@ function importExcelTC(){
 			$rowIndex = $row->getRowIndex() + 1;
 		}
 		$array_data[$rowIndex] = array(
-			'A'=>'', 'B'=>'', 'C'=>'',
+			'A'=>'', 'B'=>'', 'C'=>'', 'D'=>'',
 			'E'=>'','F'=>'','G'=>'','H'=>'','I'=>'','J'=>'',
 		);
 		
@@ -423,6 +423,8 @@ function importExcelTC(){
 		$array_data[$rowIndex]['B'] = $cell->getCalculatedValue();
 		$cell = $sheet->getCell('C' . $rowIndex);
 		$array_data[$rowIndex]['C'] = $cell->getCalculatedValue();
+		$cell = $sheet->getCell('D' . $rowIndex);
+		$array_data[$rowIndex]['D'] = $cell->getCalculatedValue();
 		$cell = $sheet->getCell('E' . $rowIndex);
 		$array_data[$rowIndex]['E'] = $cell->getCalculatedValue();
 		$cell = $sheet->getCell('F' . $rowIndex);
@@ -436,7 +438,8 @@ function importExcelTC(){
 		$cell = $sheet->getCell('J' . $rowIndex);
 		$array_data[$rowIndex]['J'] = $cell->getCalculatedValue();
 	}
-	print_r($array_data);
+	wp_die();
+	return $array_data;
 }
 add_action('wp_ajax_importExcelTC', 'importExcelTC');
 add_action('wp_ajax_nopriv_importExcelTC', 'importExcelTC');
