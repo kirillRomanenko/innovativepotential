@@ -386,6 +386,61 @@ try {
 add_action('wp_ajax_importExcelDA', 'importExcelDA');
 add_action('wp_ajax_nopriv_importExcelDA', 'importExcelDA');
 
+function importExcelTC(){
+	// library
+	include_once(get_template_directory() . '/inc/PHPExcel/PHPExcel.php');
+	include_once(get_template_directory() . '/inc/PHPExcel/PHPExcel/Writer/Excel5.php');
+	include_once(get_template_directory() . '/inc/PHPExcel/PHPExcel/Writer/Excel2007.php');
+	include_once(get_template_directory() . '/inc/PHPExcel/PHPExcel/IOFactory.php');
+
+	$inputFileName = get_template_directory().'/TB.xlsx';
+	
+
+	//  Read your Excel workbook
+	try {
+		$inputFileType = PHPExcel_IOFactory::identify($inputFileName);
+		$objReader = PHPExcel_IOFactory::createReader($inputFileType);
+		$objPHPExcel = $objReader->load($inputFileName);
+	} catch(Exception $e) {
+		die('Error loading file "'.pathinfo($inputFileName,PATHINFO_BASENAME).'": '.$e->getMessage());
+	}
+	$objPHPExcel->setActiveSheetIndex(0);
+	$sheet = $objPHPExcel ->getActiveSheet();
+	$array_data = array();
+	foreach($sheet->getRowIterator() as $row){
+		$rowIndex = $row->getRowIndex ();
+		if ($rowIndex == 1) {
+			$rowIndex = $row->getRowIndex() + 1;
+		}
+		$array_data[$rowIndex] = array(
+			'A'=>'', 'B'=>'', 'C'=>'',
+			'E'=>'','F'=>'','G'=>'','H'=>'','I'=>'','J'=>'',
+		);
+		
+		$cell = $sheet->getCell('A' . $rowIndex);
+		$array_data[$rowIndex]['A'] = $cell->getCalculatedValue();
+		$cell = $sheet->getCell('B' . $rowIndex);
+		$array_data[$rowIndex]['B'] = $cell->getCalculatedValue();
+		$cell = $sheet->getCell('C' . $rowIndex);
+		$array_data[$rowIndex]['C'] = $cell->getCalculatedValue();
+		$cell = $sheet->getCell('E' . $rowIndex);
+		$array_data[$rowIndex]['E'] = $cell->getCalculatedValue();
+		$cell = $sheet->getCell('F' . $rowIndex);
+		$array_data[$rowIndex]['F'] = $cell->getCalculatedValue();
+		$cell = $sheet->getCell('G' . $rowIndex);
+		$array_data[$rowIndex]['G'] = $cell->getCalculatedValue();
+		$cell = $sheet->getCell('H' . $rowIndex);
+		$array_data[$rowIndex]['H'] = $cell->getCalculatedValue();
+		$cell = $sheet->getCell('I' . $rowIndex);
+		$array_data[$rowIndex]['I'] = $cell->getCalculatedValue();
+		$cell = $sheet->getCell('J' . $rowIndex);
+		$array_data[$rowIndex]['J'] = $cell->getCalculatedValue();
+	}
+	print_r($array_data);
+}
+add_action('wp_ajax_importExcelTC', 'importExcelTC');
+add_action('wp_ajax_nopriv_importExcelTC', 'importExcelTC');
+
 // function settlementByIndustry(){ // Расчет с учетом отраслевого разреза
 // 	$array_dataRate = importExcelDA();
 // 	$array_B1 = array();
@@ -548,6 +603,8 @@ function sizeBasedCalculation(){ //Расчет с учетом размера �
 	print_r($DC2.PHP_EOL); // среднее
 	print_r($DC3.PHP_EOL); // крупное
 	wp_die();
+	return [$DC1,$DC2,$DC3];
+	
 }
 add_action('wp_ajax_sizeBasedCalculation', 'sizeBasedCalculation');
 add_action('wp_ajax_nopriv_sizeBasedCalculation', 'sizeBasedCalculation');
