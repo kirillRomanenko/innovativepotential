@@ -347,32 +347,32 @@ function importExcelTC(){
 			$rowIndex = $row->getRowIndex() + 1;
 		}
 		$array_data[$rowIndex] = array(
-			'A'=>'', 'B'=>'', 'C'=>'', 'D'=>'',
-			'E'=>'','F'=>'','G'=>'','H'=>'','I'=>'','J'=>'',
+			'A'=>'', '2010'=>'', '2011'=>'', '2012'=>'',
+			'2013'=>'','2014'=>'','2015'=>'','2016'=>'','2017'=>'','2018'=>'',
 		);
 		
 		$cell = $sheet->getCell('A' . $rowIndex);
 		$array_data[$rowIndex]['A'] = $cell->getCalculatedValue();
 		$cell = $sheet->getCell('B' . $rowIndex);
-		$array_data[$rowIndex]['B'] = $cell->getCalculatedValue();
+		$array_data[$rowIndex]['2010'] = $cell->getCalculatedValue();
 		$cell = $sheet->getCell('C' . $rowIndex);
-		$array_data[$rowIndex]['C'] = $cell->getCalculatedValue();
+		$array_data[$rowIndex]['2011'] = $cell->getCalculatedValue();
 		$cell = $sheet->getCell('D' . $rowIndex);
-		$array_data[$rowIndex]['D'] = $cell->getCalculatedValue();
+		$array_data[$rowIndex]['2012'] = $cell->getCalculatedValue();
 		$cell = $sheet->getCell('E' . $rowIndex);
-		$array_data[$rowIndex]['E'] = $cell->getCalculatedValue();
+		$array_data[$rowIndex]['2013'] = $cell->getCalculatedValue();
 		$cell = $sheet->getCell('F' . $rowIndex);
-		$array_data[$rowIndex]['F'] = $cell->getCalculatedValue();
+		$array_data[$rowIndex]['2014'] = $cell->getCalculatedValue();
 		$cell = $sheet->getCell('G' . $rowIndex);
-		$array_data[$rowIndex]['G'] = $cell->getCalculatedValue();
+		$array_data[$rowIndex]['2015'] = $cell->getCalculatedValue();
 		$cell = $sheet->getCell('H' . $rowIndex);
-		$array_data[$rowIndex]['H'] = $cell->getCalculatedValue();
+		$array_data[$rowIndex]['2016'] = $cell->getCalculatedValue();
 		$cell = $sheet->getCell('I' . $rowIndex);
-		$array_data[$rowIndex]['I'] = $cell->getCalculatedValue();
+		$array_data[$rowIndex]['2017'] = $cell->getCalculatedValue();
 		$cell = $sheet->getCell('J' . $rowIndex);
-		$array_data[$rowIndex]['J'] = $cell->getCalculatedValue();
+		$array_data[$rowIndex]['2018'] = $cell->getCalculatedValue();
 	}
-	wp_die();
+	
 	return $array_data;
 }
 add_action('wp_ajax_importExcelTC', 'importExcelTC');
@@ -434,7 +434,20 @@ function sizeBasedCalculation(){ //Расчет с учетом размера �
 add_action('wp_ajax_sizeBasedCalculation', 'sizeBasedCalculation');
 add_action('wp_ajax_nopriv_sizeBasedCalculation', 'sizeBasedCalculation');
 
-
+function calculationOfIndicators(){ // Расчет индикаторов по блокам
+	$array_data = importExcelTC();
+	$T1 = array();
+	$array_years = array('2010','2011','2012','2013','2014','2015','2016','2017','2018');
+	$array_yearsSize = count($array_years);
+	foreach ($array_years as $year) { 
+		$T1[$year] = $array_data[2][$year] / $array_data[3][$year];
+	}
+	print_r($array_data);
+	print_r($T1);
+	wp_die();
+}
+add_action('wp_ajax_calculationOfIndicators', 'calculationOfIndicators');
+add_action('wp_ajax_nopriv_calculationOfIndicators', 'calculationOfIndicators');
 
 
 
