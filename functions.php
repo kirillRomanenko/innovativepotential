@@ -568,11 +568,14 @@ function innovativePotential(){
 	$IA = array(13.0, 13.3, 13.4, 13.3, 13.6, 13.3, 13.3, 15.1, 14.2);
 	$IAsize = count($IA);
 	$array_years = array('2010','2011','2012','2013','2014','2015','2016','2017','2018');
-	$IP = array();
+	$array_yearsPrognoz = array('2010','2011','2012','2013','2014','2015','2016',
+	'2017','2018','2019','2020','2021','2022','2023','2024','2025');
+	$IP_small = array(); // иновационный потенциал малых предприятий
+	$IP_average = array(); // иновационный потенциал средних предприятий
+	$IP_big = array(); // иновационный потенциал крупных предприятий
 	$Ytemp = array();
 	$Y = array();
 	$flagFirstElem = false;
-	// foreach($array_years as $year){
 		for($i = 0; $i < $IAsize; $i++){
 			if ($flagFirstElem == false) {
 				
@@ -582,10 +585,14 @@ function innovativePotential(){
 				$Ytemp[$i] = (($IA[$i] - $IA[$i - 1]) * ($IA[$i] - $IA[$i - 1])) / $IA[$i - 1];
 			}
 		}	
-	// }
 	$Y = array_combine($array_years, $Ytemp);
+	foreach($array_years as $years){
+		$IP_small[$years] = ($TC[$years] + $DC1 + $IE[$years]) / $Y[$years];
+		$IP_average[$years] = ($TC[$years] + $DC2 + $IE[$years]) / $Y[$years];
+		$IP_big[$years] = ($TC[$years] + $DC3 + $IE[$years]) / $Y[$years];
+	}
 	
-	print_r($Y);
+	print_r($IP_big);
 	
 }
 add_action('wp_ajax_innovativePotential', 'innovativePotential');
