@@ -433,7 +433,7 @@ function importExcelIE(){
 		$array_data[$rowIndex]['2018'] = $cell->getCalculatedValue();
 		
 	}
-	print_r($array_data);
+	// print_r($array_data);
 	
 	return $array_data;
 }
@@ -486,11 +486,12 @@ function sizeBasedCalculation(){ //Расчет с учетом размера �
 	}
 	$DC = ($B1 + $B2 + $B3) / $countB;
 	// print_r($array_dataRate);
-	print_r($DC1.PHP_EOL); // малое
-	print_r($DC2.PHP_EOL); // среднее
-	print_r($DC3.PHP_EOL); // крупное
-	wp_die();
-	return [$DC1,$DC2,$DC3];
+	// print_r($DC1.PHP_EOL); // малое
+	// print_r($DC2.PHP_EOL); // среднее
+	// print_r($DC3.PHP_EOL); // крупное
+	// wp_die();
+	return array($DC1,$DC2,$DC3);
+	// return ['DC1' => $DC1, 'DC2' => $DC2, 'DC3' => $DC3];
 	
 }
 add_action('wp_ajax_sizeBasedCalculation', 'sizeBasedCalculation');
@@ -534,10 +535,10 @@ function calculationOfIndicators(){ // Расчет индикаторов по 
 
 		$TC[$year] = 1 / (3*($BlockT[$year] + $BlockK[$year] + $BlockI[$year]));
 	}
-	print_r($array_data);
-	print_r($I6);
-	print_r($TC);
-	wp_die();
+	// print_r($array_data);
+	// print_r($I6);
+	// print_r($TC);
+	// wp_die();
 	return $TC;
 }
 add_action('wp_ajax_calculationOfIndicators', 'calculationOfIndicators');
@@ -553,12 +554,42 @@ function institutionalEnvironment(){
 	foreach($array_years as $year){
 		$IE[$year] = 1 / (3 * ($array_data[3][$year] + (1 - $array_data[4][$year]) + (1 - $array_data[5][$year])));
 	}
-	print_r($IE);
-	wp_die();
+	// print_r($IE);
+	// wp_die();
 	return $IE;
 }
 add_action('wp_ajax_institutionalEnvironment', 'institutionalEnvironment');
 add_action('wp_ajax_nopriv_institutionalEnvironment', 'institutionalEnvironment');
+
+function innovativePotential(){
+	list($DC1, $DC2, $DC3) = sizeBasedCalculation(); // Динамические способности с учетом размера предприятия
+	$TC = calculationOfIndicators(); // Технологические возможности
+	$IE = institutionalEnvironment(); // Институциональная среда
+	$IA = array(13.0, 13.3, 13.4, 13.3, 13.6, 13.3, 13.3, 15.1, 14.2);
+	$IAsize = count($IA);
+	$array_years = array('2010','2011','2012','2013','2014','2015','2016','2017','2018');
+	$IP = array();
+	$Ytemp = array();
+	$Y = array();
+	$flagFirstElem = false;
+	// foreach($array_years as $year){
+		for($i = 0; $i < $IAsize; $i++){
+			if ($flagFirstElem == false) {
+				
+				$Ytemp[$i] = $IA[0];
+				$flagFirstElem = true;
+			} else {
+				$Ytemp[$i] = (($IA[$i] - $IA[$i - 1]) * ($IA[$i] - $IA[$i - 1])) / $IA[$i - 1];
+			}
+		}	
+	// }
+	$Y = array_combine($array_years, $Ytemp);
+	
+	print_r($Y);
+	
+}
+add_action('wp_ajax_innovativePotential', 'innovativePotential');
+add_action('wp_ajax_nopriv_innovativePotential', 'innovativePotential');
 
 
 
