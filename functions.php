@@ -438,14 +438,16 @@ function calculationOfIndicators(){ // Расчет индикаторов по 
 	$array_data = importExcelTC();
 	$T1 = array();
 	$T2 = array();
+	$T4 = array();
 	$array_years = array('2010','2011','2012','2013','2014','2015','2016','2017','2018');
 	$array_yearsSize = count($array_years);
 	foreach ($array_years as $year) { 
 		$T1[$year] = $array_data[2][$year] / $array_data[3][$year];
 		$T2[$year] = $array_data[4][$year] / $array_data[3][$year];
+		$T4[$year] = $array_data[5][$year] / $array_data[6][$year];
 	}
 	print_r($array_data);
-	print_r($T2);
+	print_r($T4);
 	wp_die();
 }
 add_action('wp_ajax_calculationOfIndicators', 'calculationOfIndicators');
