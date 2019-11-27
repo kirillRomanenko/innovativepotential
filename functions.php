@@ -378,7 +378,7 @@ function importExcelTC(){
 add_action('wp_ajax_importExcelTC', 'importExcelTC');
 add_action('wp_ajax_nopriv_importExcelTC', 'importExcelTC');
 
-function importIE(){
+function importExcelIE(){
 	// library
 	include_once(get_template_directory() . '/inc/PHPExcel/PHPExcel.php');
 	include_once(get_template_directory() . '/inc/PHPExcel/PHPExcel/Writer/Excel5.php');
@@ -437,8 +437,8 @@ function importIE(){
 	
 	return $array_data;
 }
-add_action('wp_ajax_importIE', 'importIE');
-add_action('wp_ajax_nopriv_importIE', 'importIE');
+add_action('wp_ajax_importExcelIE', 'importExcelIE');
+add_action('wp_ajax_nopriv_importExcelIE', 'importExcelIE');
 
 
 function sizeBasedCalculation(){ //Расчет с учетом размера предприятия
@@ -544,8 +544,21 @@ add_action('wp_ajax_calculationOfIndicators', 'calculationOfIndicators');
 add_action('wp_ajax_nopriv_calculationOfIndicators', 'calculationOfIndicators');
 
 function institutionalEnvironment(){
-	
+	$array_data = importExcelIE();
+	$NA = array();
+	$TAX = array();
+	$t = array();
+	$IE = array();
+	$array_years = array('2010','2011','2012','2013','2014','2015','2016','2017','2018');
+	foreach($array_years as $year){
+		$IE[$year] = 1 / (3 * ($array_data[3][$year] + (1 - $array_data[4][$year]) + (1 - $array_data[5][$year])));
+	}
+	print_r($IE);
+	wp_die();
+	return $IE;
 }
+add_action('wp_ajax_institutionalEnvironment', 'institutionalEnvironment');
+add_action('wp_ajax_nopriv_institutionalEnvironment', 'institutionalEnvironment');
 
 
 
