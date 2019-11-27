@@ -439,15 +439,31 @@ function calculationOfIndicators(){ // Расчет индикаторов по 
 	$T1 = array();
 	$T2 = array();
 	$T4 = array();
+	$K1 = array();
+	$K5FO = array();
+	$I1 = array();
+	$I2 = array();
+	$I5 = array();
+	$I6 = array();
 	$array_years = array('2010','2011','2012','2013','2014','2015','2016','2017','2018');
-	$array_yearsSize = count($array_years);
 	foreach ($array_years as $year) { 
+		// Труд
 		$T1[$year] = $array_data[2][$year] / $array_data[3][$year];
 		$T2[$year] = $array_data[4][$year] / $array_data[3][$year];
 		$T4[$year] = $array_data[5][$year] / $array_data[6][$year];
+
+		// Капитал
+		$K1[$year] = $array_data[11][$year] / $array_data[12][$year];
+		$K5FO[$year] = $array_data[17][$year];
+
+		//Инновации
+		$I1[$year] = $array_data[9][$year] / $array_data[10][$year];
+		$I2[$year] = $array_data[13][$year];
+		$I5[$year] = $array_data[14][$year];
+		$I6[$year] = $array_data[15][$year] / $array_data[16][$year];
 	}
 	print_r($array_data);
-	print_r($T4);
+	print_r($I6);
 	wp_die();
 }
 add_action('wp_ajax_calculationOfIndicators', 'calculationOfIndicators');
