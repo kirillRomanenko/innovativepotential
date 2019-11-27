@@ -378,6 +378,68 @@ function importExcelTC(){
 add_action('wp_ajax_importExcelTC', 'importExcelTC');
 add_action('wp_ajax_nopriv_importExcelTC', 'importExcelTC');
 
+function importIE(){
+	// library
+	include_once(get_template_directory() . '/inc/PHPExcel/PHPExcel.php');
+	include_once(get_template_directory() . '/inc/PHPExcel/PHPExcel/Writer/Excel5.php');
+	include_once(get_template_directory() . '/inc/PHPExcel/PHPExcel/Writer/Excel2007.php');
+	include_once(get_template_directory() . '/inc/PHPExcel/PHPExcel/IOFactory.php');
+
+	$inputFileName = get_template_directory().'/IE.xlsx';
+	
+
+	//  Read your Excel workbook
+	try {
+		$inputFileType = PHPExcel_IOFactory::identify($inputFileName);
+		$objReader = PHPExcel_IOFactory::createReader($inputFileType);
+		$objPHPExcel = $objReader->load($inputFileName);
+	} catch(Exception $e) {
+		die('Error loading file "'.pathinfo($inputFileName,PATHINFO_BASENAME).'": '.$e->getMessage());
+	}
+	$objPHPExcel->setActiveSheetIndex(0);
+	$sheet = $objPHPExcel ->getActiveSheet();
+	$array_data = array();
+	foreach($sheet->getRowIterator() as $row){
+		$rowIndex = $row->getRowIndex ();
+		if ($rowIndex == 1) {
+			$rowIndex = $row->getRowIndex() + 1;
+		}
+		$array_data[$rowIndex] = array(
+			'A'=>'','B'=>'', '2010'=>'', '2011'=>'', '2012'=>'',
+			'2013'=>'','2014'=>'','2015'=>'','2016'=>'','2017'=>'','2018'=>'',
+		);
+		
+		$cell = $sheet->getCell('A' . $rowIndex);
+		$array_data[$rowIndex]['A'] = $cell->getCalculatedValue();
+		$cell = $sheet->getCell('B' . $rowIndex);
+		$array_data[$rowIndex]['B'] = $cell->getCalculatedValue();
+		$cell = $sheet->getCell('M' . $rowIndex);
+		$array_data[$rowIndex]['2010'] = $cell->getCalculatedValue();
+		$cell = $sheet->getCell('N' . $rowIndex);
+		$array_data[$rowIndex]['2011'] = $cell->getCalculatedValue();
+		$cell = $sheet->getCell('O' . $rowIndex);
+		$array_data[$rowIndex]['2012'] = $cell->getCalculatedValue();
+		$cell = $sheet->getCell('P' . $rowIndex);
+		$array_data[$rowIndex]['2013'] = $cell->getCalculatedValue();
+		$cell = $sheet->getCell('Q' . $rowIndex);
+		$array_data[$rowIndex]['2014'] = $cell->getCalculatedValue();
+		$cell = $sheet->getCell('R' . $rowIndex);
+		$array_data[$rowIndex]['2015'] = $cell->getCalculatedValue();
+		$cell = $sheet->getCell('S' . $rowIndex);
+		$array_data[$rowIndex]['2016'] = $cell->getCalculatedValue();
+		$cell = $sheet->getCell('T' . $rowIndex);
+		$array_data[$rowIndex]['2017'] = $cell->getCalculatedValue();
+		$cell = $sheet->getCell('U' . $rowIndex);
+		$array_data[$rowIndex]['2018'] = $cell->getCalculatedValue();
+		
+	}
+	print_r($array_data);
+	
+	return $array_data;
+}
+add_action('wp_ajax_importIE', 'importIE');
+add_action('wp_ajax_nopriv_importIE', 'importIE');
+
 
 function sizeBasedCalculation(){ //Расчет с учетом размера предприятия
 	$array_dataRate = importExcelDA();
@@ -445,6 +507,10 @@ function calculationOfIndicators(){ // Расчет индикаторов по 
 	$I2 = array();
 	$I5 = array();
 	$I6 = array();
+	$BlockT = array();
+	$BlockK = array();
+	$BlockI = array();
+	$TC = array();
 	$array_years = array('2010','2011','2012','2013','2014','2015','2016','2017','2018');
 	foreach ($array_years as $year) { 
 		// Труд
@@ -461,13 +527,25 @@ function calculationOfIndicators(){ // Расчет индикаторов по 
 		$I2[$year] = $array_data[13][$year];
 		$I5[$year] = $array_data[14][$year];
 		$I6[$year] = $array_data[15][$year] / $array_data[16][$year];
+
+		$BlockT[$year] = ($T1[$year] + $T2[$year] + $T4[$year]) / 3;
+		$BlockK[$year] = ($K1[$year] + $K5FO[$year]) / 2;
+		$BlockI[$year] = ($I1[$year] + $I2[$year] + $I5[$year] + $I6[$year]) / 4;
+
+		$TC[$year] = 1 / (3*($BlockT[$year] + $BlockK[$year] + $BlockI[$year]));
 	}
 	print_r($array_data);
 	print_r($I6);
+	print_r($TC);
 	wp_die();
+	return $TC;
 }
 add_action('wp_ajax_calculationOfIndicators', 'calculationOfIndicators');
 add_action('wp_ajax_nopriv_calculationOfIndicators', 'calculationOfIndicators');
+
+function institutionalEnvironment(){
+	
+}
 
 
 
