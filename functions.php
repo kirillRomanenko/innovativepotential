@@ -131,6 +131,7 @@ add_action( 'wp_enqueue_scripts', 'my_enqueue' );
  * Enqueue scripts and styles.
  */
 function innovativepotential_scripts() {
+	//scripts
 	wp_enqueue_style( 'innovativepotential-style', get_stylesheet_uri() );
 
 	wp_enqueue_script( 'innovativepotential-navigation', get_template_directory_uri() . '/js/navigation.js', array(), '20151215', true );
@@ -138,15 +139,18 @@ function innovativepotential_scripts() {
 
 	wp_enqueue_script( 'innovativepotential-skip-link-focus-fix', get_template_directory_uri() . '/js/skip-link-focus-fix.js', array(), '20151215', true );
 	wp_enqueue_script( 'general-script', get_template_directory_uri() .'/js/general.js' , array(), null, false );
+	wp_enqueue_script( 'bootstrap-script', get_template_directory_uri() .'/js/bootstrap.min.js' , array(), null, false );
 
 	if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
 		wp_enqueue_script( 'comment-reply' );
 	}
+	//styles
+	wp_enqueue_style('bootstrap-style', get_theme_file_uri('/css/bootstrap.min.css'), array(), null);
 }
 add_action( 'wp_enqueue_scripts', 'innovativepotential_scripts' );
 
 
-function importExcelDA()
+function importExcelDA($inputFileName1)
 {
 	// library
 	include_once(get_template_directory() . '/inc/PHPExcel/PHPExcel.php');
@@ -155,7 +159,8 @@ function importExcelDA()
 	include_once(get_template_directory() . '/inc/PHPExcel/PHPExcel/IOFactory.php');
 
 
-	$inputFileName = get_template_directory().'/BD.xlsx';
+	// $inputFileName = get_template_directory().'/BD.xlsx';
+	$inputFileName = $inputFileName1;
 	
 
 //  Read your Excel workbook
@@ -320,14 +325,15 @@ try {
 add_action('wp_ajax_importExcelDA', 'importExcelDA');
 add_action('wp_ajax_nopriv_importExcelDA', 'importExcelDA');
 
-function importExcelTC(){
+function importExcelTC($inputFileName2){
 	// library
 	include_once(get_template_directory() . '/inc/PHPExcel/PHPExcel.php');
 	include_once(get_template_directory() . '/inc/PHPExcel/PHPExcel/Writer/Excel5.php');
 	include_once(get_template_directory() . '/inc/PHPExcel/PHPExcel/Writer/Excel2007.php');
 	include_once(get_template_directory() . '/inc/PHPExcel/PHPExcel/IOFactory.php');
 
-	$inputFileName = get_template_directory().'/TB.xlsx';
+	// $inputFileName = get_template_directory().'/TB.xlsx';
+	$inputFileName = $inputFileName2;
 	
 
 	//  Read your Excel workbook
@@ -378,14 +384,15 @@ function importExcelTC(){
 add_action('wp_ajax_importExcelTC', 'importExcelTC');
 add_action('wp_ajax_nopriv_importExcelTC', 'importExcelTC');
 
-function importExcelIE(){
+function importExcelIE($inputFileName3){
 	// library
 	include_once(get_template_directory() . '/inc/PHPExcel/PHPExcel.php');
 	include_once(get_template_directory() . '/inc/PHPExcel/PHPExcel/Writer/Excel5.php');
 	include_once(get_template_directory() . '/inc/PHPExcel/PHPExcel/Writer/Excel2007.php');
 	include_once(get_template_directory() . '/inc/PHPExcel/PHPExcel/IOFactory.php');
 
-	$inputFileName = get_template_directory().'/IE.xlsx';
+	// $inputFileName = get_template_directory().'/IE.xlsx';
+	$inputFileName = $inputFileName3;
 	
 
 	//  Read your Excel workbook
@@ -441,8 +448,8 @@ add_action('wp_ajax_importExcelIE', 'importExcelIE');
 add_action('wp_ajax_nopriv_importExcelIE', 'importExcelIE');
 
 
-function sizeBasedCalculation(){ //Расчет с учетом размера предприятия
-	$array_dataRate = importExcelDA();
+function sizeBasedCalculation($inputFileName1){ //Расчет с учетом размера предприятия
+	$array_dataRate = importExcelDA($inputFileName1);
 	$array_B1 = array();
 	$B1 = null;
 	$array_B2 = array();
@@ -497,8 +504,8 @@ function sizeBasedCalculation(){ //Расчет с учетом размера �
 add_action('wp_ajax_sizeBasedCalculation', 'sizeBasedCalculation');
 add_action('wp_ajax_nopriv_sizeBasedCalculation', 'sizeBasedCalculation');
 
-function calculationOfIndicators(){ // Расчет индикаторов по блокам
-	$array_data = importExcelTC();
+function calculationOfIndicators($inputFileName2){ // Расчет индикаторов по блокам
+	$array_data = importExcelTC($inputFileName2);
 	$T1 = array();
 	$T2 = array();
 	$T4 = array();
@@ -544,8 +551,8 @@ function calculationOfIndicators(){ // Расчет индикаторов по 
 add_action('wp_ajax_calculationOfIndicators', 'calculationOfIndicators');
 add_action('wp_ajax_nopriv_calculationOfIndicators', 'calculationOfIndicators');
 
-function institutionalEnvironment(){
-	$array_data = importExcelIE();
+function institutionalEnvironment($inputFileName3){
+	$array_data = importExcelIE($inputFileName3);
 	$NA = array();
 	$TAX = array();
 	$t = array();
@@ -561,10 +568,16 @@ function institutionalEnvironment(){
 add_action('wp_ajax_institutionalEnvironment', 'institutionalEnvironment');
 add_action('wp_ajax_nopriv_institutionalEnvironment', 'institutionalEnvironment');
 
-function innovativePotential(){
-	list($DC1, $DC2, $DC3) = sizeBasedCalculation(); // Динамические способности с учетом размера предприятия
-	$TC = calculationOfIndicators(); // Технологические возможности
-	$IE = institutionalEnvironment(); // Институциональная среда
+function calcInnovativePotential(){
+	$inputFileName1 = $_POST['File01'];
+	$inputFileName2 = $_POST['File02'];
+	$inputFileName3 = $_POST['File03'];
+	$inputValueDC = $_POST['valueDC'];
+
+	list($DC1, $DC2, $DC3) = sizeBasedCalculation($inputFileName1); // Динамические способности с учетом размера предприятия
+	
+	$TC = calculationOfIndicators($inputFileName2); // Технологические возможности
+	$IE = institutionalEnvironment($inputFileName3); // Институциональная среда
 	$IA = array(13.0, 13.3, 13.4, 13.3, 13.6, 13.3, 13.3, 15.1, 14.2);
 	$IAsize = count($IA);
 	$array_years = array('2010','2011','2012','2013','2014','2015','2016','2017','2018');
@@ -591,12 +604,13 @@ function innovativePotential(){
 		$IP_average[$years] = ($TC[$years] + $DC2 + $IE[$years]) / $Y[$years];
 		$IP_big[$years] = ($TC[$years] + $DC3 + $IE[$years]) / $Y[$years];
 	}
-	
-	print_r($IP_big);
+	print_r($IP_small); // Иновационный потенциал малых предприятий
+	print_r($IP_average); // Иновационный потенциал средних предприятий
+	print_r($IP_big); // Иновационный потенциал крупных предприятий
 	
 }
-add_action('wp_ajax_innovativePotential', 'innovativePotential');
-add_action('wp_ajax_nopriv_innovativePotential', 'innovativePotential');
+add_action('wp_ajax_calcInnovativePotential', 'calcInnovativePotential');
+add_action('wp_ajax_nopriv_calcInnovativePotential', 'calcInnovativePotential');
 
 
 
