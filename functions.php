@@ -569,10 +569,18 @@ add_action('wp_ajax_institutionalEnvironment', 'institutionalEnvironment');
 add_action('wp_ajax_nopriv_institutionalEnvironment', 'institutionalEnvironment');
 
 function calcInnovativePotential(){
-	$inputFileName1 = $_POST['File01'];
-	$inputFileName2 = $_POST['File02'];
-	$inputFileName3 = $_POST['File03'];
-	$inputValueDC = $_POST['valueDC'];
+	$inputFileName1 = $_FILES['file']['name'];
+	$inputFileName2 = $_FILES['file']['name'];
+	$inputFileName3 = $_FILES['file']['name'];
+	
+	// echo $inputFileName2;
+	// $inputValueDC = $_POST['valueDC'];
+	// $inputFileName1 = $_FILES['File01']['inputFileName1'];
+	// $inputFileName2 = $_FILES['File02']['inputFileName2'];
+	// $inputFileName3 = $_FILES['File03']['inputFileName3'];
+	// $inputValueDC = $_POST['valueDC'];
+	// print_r($inputFileName1);
+	
 
 	list($DC1, $DC2, $DC3) = sizeBasedCalculation($inputFileName1); // Динамические способности с учетом размера предприятия
 	

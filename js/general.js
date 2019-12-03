@@ -10,20 +10,21 @@ $(document).ready(function () {
         let file_data;
         let form_data = new FormData();
 
-       $('.js-add-file').map(function() {
+        $('.js-add-file').map(function () {
             file_data = $(this).prop('files')[0];
             form_data.append('file', file_data);
-       })                
+            form_data.append('action', 'calcInnovativePotential');
+        })
 
         $.ajax({
             type: "POST",
             url: my_ajax_object.ajax_url,
             cache: false,
             dataType: 'json',
-            processData: false, 
+            processData: false,
             contentType: false,
-            data: {'action': 'calcInnovativePotential', form_data},
-            
+            data: form_data,
+
             success: function (responce) {
             }
         });
