@@ -569,9 +569,9 @@ add_action('wp_ajax_institutionalEnvironment', 'institutionalEnvironment');
 add_action('wp_ajax_nopriv_institutionalEnvironment', 'institutionalEnvironment');
 
 function calcInnovativePotential(){
-	$inputFileName1 = $_FILES['file']['name'];
-	$inputFileName2 = $_FILES['file']['name'];
-	$inputFileName3 = $_FILES['file']['name'];
+	$inputFileName1 = $_FILES['file_0']['tmp_name'];
+	$inputFileName2 = $_FILES['file_1']['tmp_name'];
+	$inputFileName3 = $_FILES['file_2']['tmp_name'];
 	
 	// echo $inputFileName2;
 	// $inputValueDC = $_POST['valueDC'];
@@ -612,9 +612,14 @@ function calcInnovativePotential(){
 		$IP_average[$years] = ($TC[$years] + $DC2 + $IE[$years]) / $Y[$years];
 		$IP_big[$years] = ($TC[$years] + $DC3 + $IE[$years]) / $Y[$years];
 	}
-	print_r($IP_small); // Иновационный потенциал малых предприятий
-	print_r($IP_average); // Иновационный потенциал средних предприятий
-	print_r($IP_big); // Иновационный потенциал крупных предприятий
+	// print_r($IP_small); // Иновационный потенциал малых предприятий
+	// print_r($IP_average); // Иновационный потенциал средних предприятий
+	// print_r($IP_big); // Иновационный потенциал крупных предприятий
+	// echo $IP_small, $IP_average, $IP_big;
+	print_r($IP_small);
+	print_r($IP_average);
+	print_r($IP_big);
+	wp_die();
 	
 }
 add_action('wp_ajax_calcInnovativePotential', 'calcInnovativePotential');

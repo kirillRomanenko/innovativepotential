@@ -983,3 +983,31 @@ object {
 .gallery-caption {
 	display: block;
 }
+
+.innovative-potential {
+	width: 100%;
+	max-width: 800px;
+	height: 800px;
+	margin: 0 auto;
+}
+
+.innovative-potential__text {
+	text-align: center;
+	margin: 40px 0 20px;
+    font-weight: bold;
+}
+
+.innovative-potential__btn {
+	margin: 0 auto 30px;
+    display: block !important;
+}
+
+.row {
+	margin-right: 0 !important;
+	margin-left: 0 !important;
+	justify-content: center;
+}
+
+.custom-file-input:lang(en)~.custom-file-label::after {
+	content: 'Открыть' !important;
+}

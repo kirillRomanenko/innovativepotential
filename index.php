@@ -14,32 +14,24 @@
 
 get_header();
 ?>
-
-	<div class='container'>
+	<div class="innovative-potential">
+	<p class="innovative-potential__text">Выберите и загрузите файлы</p>
 		<div class='row'>
+		
 			<form id='form'>
 				<div class="input-group mb-3">
-					<div class="input-group-prepend">
-						<span class="input-group-text">Upload</span>
-					</div>
 					<div class="custom-file ">
 						<input type="file" class="custom-file-input js-add-file" multiple id="inputGroupFile01" name="File01">
 						<label class="custom-file-label" for="inputGroupFile01">Выберите таблицу ДС</label>
 					</div>
 				</div>
 				<div class="input-group mb-3">
-					<div class="input-group-prepend">
-						<span class="input-group-text">Upload</span>
-					</div>
 					<div class="custom-file ">
 						<input type="file" class="custom-file-input  js-add-file" multiple id="inputGroupFile02" name="File02">
 						<label class="custom-file-label" for="inputGroupFile02">Выберите таблицу ТВ</label>
 					</div>
 				</div>
 				<div class="input-group mb-3">
-					<div class="input-group-prepend">
-						<span class="input-group-text">Upload</span>
-					</div>
 					<div class="custom-file">
 						<input type="file" class="custom-file-input  js-add-file" multiple id="inputGroupFile03" name="File03">
 						<label class="custom-file-label" for="inputGroupFile03">Выберите таблицу ИС</label>
@@ -51,11 +43,12 @@ get_header();
 					<small id="inputNumbersHelp" class="form-text text-muted">Введите прогнозные значения с 2019 по 2025 через ;</small>
   				</div>
 				
-				<button id='button-submit' type="" class="btn btn-primary">Submit</button>
+				<button id='button-submit' type="" class="btn btn-primary innovative-potential__btn">Построить графики</button>
 			</form>
 		</div>
-	</div>
 
+		<canvas id="innovativePotential" width="600" height="400"></canvas>
+	</div>
 <?php
 get_sidebar();
 get_footer();
